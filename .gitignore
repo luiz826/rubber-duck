@@ -1,0 +1,7 @@
+.DS_Store
+
+/data/train
+/data/valid
+/data/test
+/data/data.yaml
+/data/README.roboflow.txt
