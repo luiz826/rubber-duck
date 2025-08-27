@@ -101,7 +101,7 @@ The model was trained using YOLOv11 on a custom rubber duck dataset. The trainin
 
 The model achieves excellent performance on rubber duck detection with high confidence scores and accurate bounding box predictions.
 
-![Rubber Duck Prediction](rd-test.jpg)
+![Rubber Duck Prediction](results/rd-test.jpg)
 
 ## 📄 License
 
