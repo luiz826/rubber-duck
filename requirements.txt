@@ -1,2 +1,8 @@
+black
 ipykernel
 ultralytics
+opencv-python
+python-multipart
+fastapi
+uvicorn
+pillow

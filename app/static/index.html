@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rubber Duck Detector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+
+        <img width="80" src="/static/logo.png" alt="Rubber Duck Logo" class="logo">
+        <h2>Welcome to Rubber Duck Detector!</h2>
+        <p>Upload an image of a rubber duck and get instant predictions!</p>
+        <form id="uploadForm">
+            <input type="file" id="imageInput" name="file" accept="image/*" required>
+            <button type="submit" id="predictBtn" disabled>Predict</button>
+        </form>
+    <div id="result"></div>
+    <div id="labelImage"></div>
+    <div id="downloadBtnContainer"></div>
+    </div>
+    <script>
+        const predictBtn = document.getElementById('predictBtn');
+        const imageInput = document.getElementById('imageInput');
+        let currentFilename = null;
+
+        // Cleanup function to remove uploaded files
+        function cleanupFile(filename) {
+            if (filename) {
+                fetch(`/cleanup/${filename}`, { method: 'DELETE' }).catch(() => {});
+            }
+        }
+
+        // Cleanup on page unload/refresh
+        window.addEventListener('beforeunload', function() {
+            if (currentFilename) {
+                // Use sendBeacon with DELETE method for cleanup on page unload
+                fetch(`/cleanup/${currentFilename}`, { method: 'DELETE' }).catch(() => {});
+            }
+        });
+
+        imageInput.addEventListener('change', function() {
+            // Cleanup previous file if exists
+            if (currentFilename) {
+                cleanupFile(currentFilename);
+                currentFilename = null;
+            }
+            
+            if (imageInput.files.length > 0) {
+                predictBtn.disabled = false;
+                predictBtn.classList.add('active');
+            } else {
+                predictBtn.disabled = true;
+                predictBtn.classList.remove('active');
+            }
+        });
+
+        document.getElementById('uploadForm').onsubmit = async function(e) {
+            e.preventDefault();
+            predictBtn.disabled = true;
+            predictBtn.classList.remove('active');
+            const file = imageInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Predict
+            const res = await fetch('/predict', { method: 'POST', body: formData });
+            const data = await res.json();
+            currentFilename = data.filename; // Store current filename for cleanup
+            
+            document.getElementById('result').innerText = 
+                data.duck_detected ? 
+                `Rubber duck detected! \nConfidence: ${data.confidence.toFixed(2)}` : 
+                'No rubber duck detected.';
+
+            // Show labeled image and download button
+            const labelImageDiv = document.getElementById('labelImage');
+            const downloadBtnContainer = document.getElementById('downloadBtnContainer');
+            if (data.duck_detected) {
+                const resultUrl = `/result/${data.filename}`;
+                labelImageDiv.innerHTML = `<img src="${resultUrl}" alt="Labeled Image">`;
+                downloadBtnContainer.innerHTML = `<a href="${resultUrl}" download class="download-btn">Download Result Image</a>`;
+            } else {
+                labelImageDiv.innerHTML = '';
+                downloadBtnContainer.innerHTML = '';
+            }
+        };
+    </script>
+    <footer style="text-align:center; margin-top:40px; color:#4a4a4a; font-size:1rem;">
+        &copy; 2025 Luiz Fernando Costa dos Santos
+    </footer>
+</body>
+</html>
