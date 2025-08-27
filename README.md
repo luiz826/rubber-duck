@@ -1,10 +1,11 @@
 # 🦆 Rubber Duck Detection
+#### Video Demo:  TODO
+#### Description:
+An intelligent rubber duck detection system powered by YOLOv11, featuring a modern web interface and REST API for real-time predictions.
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)](https://fastapi.tiangolo.com)
 [![YOLO](https://img.shields.io/badge/YOLO-v11-yellow.svg)](https://ultralytics.com)
-
-An intelligent rubber duck detection system powered by YOLOv11, featuring a modern web interface and REST API for real-time predictions.
 
 ## ✨ Features
 
