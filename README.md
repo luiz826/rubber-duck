@@ -47,7 +47,7 @@ uvicorn app.main:app --reload
 ### Using the Command Line Interface
 ```bash
 # Run inference on a single image
-python src/infer.py path/to/your/image.jpg
+python src/infer.py path/to/your/image.jpg path/to/output.jpg
 ```
 
 ## 📋 API Endpoints
