@@ -1,4 +1,4 @@
-# Rubber Duck Detection
+# Rubber Duck Detector
 #### Video Demo: https://youtu.be/NbRDflLjlZY
 #### Description:
 An intelligent rubber duck detection system powered by YOLOv11, featuring a modern web interface and REST API for real-time predictions.
