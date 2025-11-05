@@ -18,7 +18,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://*.vercel.app",  # Allow all Vercel deployments
+        "https://rubber-duck-sigma.vercel.app",  # Allow all Vercel deployments
         "http://localhost:3000",  # Local development
         "http://127.0.0.1:8000",  # Local backend
     ],
