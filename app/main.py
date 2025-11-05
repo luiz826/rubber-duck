@@ -7,11 +7,25 @@ import glob
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.infer import RubberDuckDetector
 
 
 app = FastAPI()
+
+# Configure CORS for Vercel frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://*.vercel.app",  # Allow all Vercel deployments
+        "http://localhost:3000",  # Local development
+        "http://127.0.0.1:8000",  # Local backend
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 detector = RubberDuckDetector()
 UPLOAD_DIR = "app/uploads"
