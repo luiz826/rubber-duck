@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rubber Duck Detector</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <img width="80" src="logo.png" alt="Rubber Duck Logo" class="logo" onerror="this.style.display='none'">
@@ -22,7 +24,7 @@
     <script>
         // API URL - Update this after deploying to Render
         const API_URL = 'https://rubber-duck-api-evut.onrender.com'
-        
+
         const predictBtn = document.getElementById('predictBtn');
         const imageInput = document.getElementById('imageInput');
         let currentFilename = null;
@@ -30,24 +32,24 @@
         // Cleanup function to remove uploaded files
         function cleanupFile(filename) {
             if (filename) {
-                fetch(`${API_URL}/cleanup/${filename}`, { method: 'DELETE' }).catch(() => {});
+                fetch(`${API_URL}/cleanup/${filename}`, { method: 'DELETE' }).catch(() => { });
             }
         }
 
         // Cleanup on page unload/refresh
-        window.addEventListener('beforeunload', function() {
+        window.addEventListener('beforeunload', function () {
             if (currentFilename) {
-                fetch(`${API_URL}/cleanup/${currentFilename}`, { method: 'DELETE' }).catch(() => {});
+                fetch(`${API_URL}/cleanup/${currentFilename}`, { method: 'DELETE' }).catch(() => { });
             }
         });
 
-        imageInput.addEventListener('change', function() {
+        imageInput.addEventListener('change', function () {
             // Cleanup previous file if exists
             if (currentFilename) {
                 cleanupFile(currentFilename);
                 currentFilename = null;
             }
-            
+
             if (imageInput.files.length > 0) {
                 predictBtn.disabled = false;
                 predictBtn.classList.add('active');
@@ -57,12 +59,12 @@
             }
         });
 
-        document.getElementById('uploadForm').onsubmit = async function(e) {
+        document.getElementById('uploadForm').onsubmit = async function (e) {
             e.preventDefault();
             predictBtn.disabled = true;
             predictBtn.classList.remove('active');
             predictBtn.textContent = 'Processing...';
-            
+
             const file = imageInput.files[0];
             const formData = new FormData();
             formData.append('file', file);
@@ -72,11 +74,11 @@
                 const res = await fetch(`${API_URL}/predict`, { method: 'POST', body: formData });
                 const data = await res.json();
                 currentFilename = data.filename;
-                
-                document.getElementById('result').innerText = 
-                    data.duck_detected ? 
-                    `🦆 Rubber duck detected!\nConfidence: ${(data.confidence * 100).toFixed(2)}%` : 
-                    '❌ No rubber duck detected.';
+
+                document.getElementById('result').innerText =
+                    data.duck_detected ?
+                        `🦆 Rubber duck detected!\nConfidence: ${(data.confidence * 100).toFixed(2)}%` :
+                        '❌ No rubber duck detected.';
 
                 // Show labeled image and download button
                 const labelImageDiv = document.getElementById('labelImage');
@@ -101,4 +103,5 @@
         &copy; 2025 Luiz Fernando Costa dos Santos
     </footer>
 </body>
+
 </html>
