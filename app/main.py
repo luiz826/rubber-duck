@@ -56,7 +56,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
 def get_status():
-    return {"status": "Motion Coach API is up and running!"}
+    return {"status": "Rubber Duck API is up and running!"}
 
 
 @app.post("/predict")
